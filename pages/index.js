@@ -18,30 +18,50 @@ export default function Home() {
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
-      window.location.href = 'https://bit.ly/patahome'; // Redirect on success
+      await signInWithRedirect(auth, provider);
     } catch (error) {
-      if (error.code === 'auth/popup-closed-by-user') {
-        setSignInError('Please complete the sign-in process in the popup window.');
-      } else {
-        setSignInError('An error occurred during sign-in. Please try again.');
-      }
+      setSignInError('An error occurred during sign-in. Please try again.');
     }
   };
-
+  
   const signInWithGithub = async () => {
     const provider = new GithubAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
-      window.location.href = 'https://bit.ly/patahome'; // Redirect on success
+      await signInWithRedirect(auth, provider);
     } catch (error) {
-      if (error.code === 'auth/popup-closed-by-user') {
-        setSignInError('Please complete the sign-in process in the popup window.');
-      } else {
-        setSignInError('An error occurred during sign-in. Please try again.');
-      }
+      setSignInError('An error occurred during sign-in. Please try again.');
     }
   };
+
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      getRedirectResult(auth)
+        .then((result) => {
+          if (result.credential) {
+            window.location.href = 'https://bit.ly/patahome'; // Redirect on success
+          }
+        })
+        .catch((error) => {
+          setSignInError('An error occurred during sign-in. Please try again.');
+        });
+    }
+  });
+
+  useEffect(() => {
+    // Listen for changes in user authentication state
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in, redirect to desired page
+        window.location.href = 'https://bit.ly/patahome';
+      } else {
+        // User is signed out
+        console.log('User is signed out');
+      }
+    });
+  
+    // Clean up the listener when the component unmounts
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (subIndex === words[index].length + 1 && !reverse) {
@@ -80,19 +100,18 @@ export default function Home() {
       <header className="container mx-auto text-center">
         <h1 className="text-4xl font-bold text-white mb-4">PATAHOME</h1> {/* White text for better contrast */}
         <p className="text-lg text-white mb-8">Buy or rent your DREAM home today</p> {/* White text for contrast */}
+        <p className="text-white mt-8">Explore: {`${words[index].substring(0, subIndex)}${subIndex === words[index].length ? ' ' : ''}`}</p> {/* White text for contrast */}
 
         <div className="login-card bg-white rounded-lg shadow-md p-4">
-          <button onClick={signInWithGoogle} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline text-sm">
-            <img src={googleLogo.src} alt="Google logo" className="inline-block mr-2 h-4 w-4" />
-            Login with Google
-          </button>
-          <button onClick={signInWithGithub} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline text-sm">
-            <img src={githubLogo.src} alt="Github logo" className="inline-block mr-2 h-4 w-4" />
-             Login with Github
-          </button>
+           <button onClick={signInWithGoogle} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline text-sm">
+              <img src={googleLogo.src} alt="Google logo" className="inline-block mr-2 h-4 w-4" />
+              Login with Google
+            </button>
+            <button onClick={signInWithGithub} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline text-sm">
+              <img src={githubLogo.src} alt="Github logo" className="inline-block mr-2 h-4 w-4" />
+              Login with Github
+            </button> 
         </div>
-
-        <p className="text-white mt-8">Explore: {`${words[index].substring(0, subIndex)}${subIndex === words[index].length ? ' ' : ''}`}</p> {/* White text for contrast */}
       </header>
     </div>
   );

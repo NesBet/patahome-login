@@ -44,22 +44,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // Listen for changes in user authentication state
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        // User is signed in, redirect to desired page
-        window.location.href = 'https://bit.ly/patahome';
-      } else {
-        // User is signed out
-        console.log('User is signed out');
-      }
-    });
-  
-    // Clean up the listener when the component unmounts
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
     if (index === words.length) return;
 
     if (subIndex === words[index].length + 1 && index !== words.length - 1 && !reverse) {
@@ -91,7 +75,6 @@ export default function Home() {
       <header className="container mx-auto text-center">
         <h1 className="text-4xl font-bold text-white mb-4">PATAHOME</h1> {/* White text for better contrast */}
         <p className="text-lg text-white mb-8">Buy or rent your DREAM home today</p> {/* White text for contrast */}
-        <p className="text-white mt-8">Explore: {`${words[index].substring(0, subIndex)}${subIndex === words[index].length ? ' ' : ''}`}</p> {/* White text for contrast */}
 
         <div className="login-card bg-white rounded-lg shadow-md p-6">
           <button onClick={signInWithGoogle} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -103,6 +86,8 @@ export default function Home() {
             Login with Github
           </button>
         </div>
+
+        <p className="text-white mt-8">Explore: {`${words[index].substring(0, subIndex)}${subIndex === words[index].length ? ' ' : ''}`}</p> {/* White text for contrast */}
       </header>
     </div>
   );

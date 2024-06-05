@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import './App.css';
 import googleLogo from './logo_google.png';
 import githubLogo from './github_icon.png';
 import backgroundImage from './background.jpg';

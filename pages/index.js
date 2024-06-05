@@ -64,23 +64,28 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (index === words.length) return;
-
-    if (subIndex === words[index].length + 1 && index !== words.length - 1 && !reverse) {
-      setReverse(true);
+    if (subIndex === words[index].length + 1 && !reverse) {
+      if (index === words.length - 1) {
+        setIndex(0);
+        setSubIndex(0);
+      } else {
+        setReverse(true);
+      }
       return;
     }
-
+  
     if (subIndex === 0 && reverse) {
       setReverse(false);
-      setIndex((prev) => prev + 1);
+      if (index !== words.length - 1) {
+        setIndex((prev) => prev + 1);
+      }
       return;
     }
-
+  
     const timeout = setTimeout(() => {
       setSubIndex((prev) => prev + (reverse ? -1 : 1));
     }, 150);
-
+  
     return () => clearTimeout(timeout);
   }, [subIndex, index, reverse]);
 

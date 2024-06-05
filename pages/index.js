@@ -18,30 +18,34 @@ export default function Home() {
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
-      window.location.href = 'https://bit.ly/patahome'; // Redirect on success
+      await signInWithRedirect(auth, provider);
     } catch (error) {
-      if (error.code === 'auth/popup-closed-by-user') {
-        setSignInError('Please complete the sign-in process in the popup window.');
-      } else {
-        setSignInError('An error occurred during sign-in. Please try again.');
-      }
+      setSignInError('An error occurred during sign-in. Please try again.');
     }
   };
-
+  
   const signInWithGithub = async () => {
     const provider = new GithubAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
-      window.location.href = 'https://bit.ly/patahome'; // Redirect on success
+      await signInWithRedirect(auth, provider);
     } catch (error) {
-      if (error.code === 'auth/popup-closed-by-user') {
-        setSignInError('Please complete the sign-in process in the popup window.');
-      } else {
-        setSignInError('An error occurred during sign-in. Please try again.');
-      }
+      setSignInError('An error occurred during sign-in. Please try again.');
     }
   };
+
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      getRedirectResult(auth)
+        .then((result) => {
+          if (result.credential) {
+            window.location.href = 'https://bit.ly/patahome'; // Redirect on success
+          }
+        })
+        .catch((error) => {
+          setSignInError('An error occurred during sign-in. Please try again.');
+        });
+    }
+  });
 
   useEffect(() => {
     // Listen for changes in user authentication state

@@ -44,22 +44,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // Listen for changes in user authentication state
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        // User is signed in, redirect to desired page
-        window.location.href = 'https://bit.ly/patahome';
-      } else {
-        // User is signed out
-        console.log('User is signed out');
-      }
-    });
-  
-    // Clean up the listener when the component unmounts
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
     if (subIndex === words[index].length + 1 && !reverse) {
       if (index === words.length - 1) {
         setIndex(0);

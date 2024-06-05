@@ -17,14 +17,30 @@ export default function Home() {
 
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
-    window.location.href = 'https://bit.ly/patahome';
+    try {
+      await signInWithPopup(auth, provider);
+      window.location.href = 'https://bit.ly/patahome'; // Redirect on success
+    } catch (error) {
+      if (error.code === 'auth/popup-closed-by-user') {
+        setSignInError('Please complete the sign-in process in the popup window.');
+      } else {
+        setSignInError('An error occurred during sign-in. Please try again.');
+      }
+    }
   };
 
   const signInWithGithub = async () => {
     const provider = new GithubAuthProvider();
-    await signInWithPopup(auth, provider);
-    window.location.href = 'https://bit.ly/patahome';
+    try {
+      await signInWithPopup(auth, provider);
+      window.location.href = 'https://bit.ly/patahome'; // Redirect on success
+    } catch (error) {
+      if (error.code === 'auth/popup-closed-by-user') {
+        setSignInError('Please complete the sign-in process in the popup window.');
+      } else {
+        setSignInError('An error occurred during sign-in. Please try again.');
+      }
+    }
   };
 
   useEffect(() => {
@@ -49,7 +65,7 @@ export default function Home() {
   }, [subIndex, index, reverse]);
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+    <div className="bg-cover min-h-screen flex flex-col items-center justify-center" style={{ backgroundImage: `url(${backgroundImage.src})` }}> 
       <Head>
         <title>PATAHOME</title>
         <meta name="description" content="Buy or rent your DREAM home today" />
@@ -57,10 +73,10 @@ export default function Home() {
       </Head>
 
       <header className="container mx-auto text-center">
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">PATAHOME</h1>
-        <p className="text-lg text-gray-600 mb-8">Buy or rent your DREAM home today</p>
+        <h1 className="text-4xl font-bold text-white mb-4">PATAHOME</h1> {/* White text for better contrast */}
+        <p className="text-lg text-white mb-8">Buy or rent your DREAM home today</p> {/* White text for contrast */}
 
-        <div className="login-card flex flex-col gap-4">
+        <div className="login-card bg-white rounded-lg shadow-md p-6">
           <button onClick={signInWithGoogle} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             <img src={googleLogo.src} alt="Google logo" className="inline-block mr-2" />
             Login with Google
@@ -71,7 +87,7 @@ export default function Home() {
           </button>
         </div>
 
-        <p className="text-gray-700 mt-8">Explore: {`${words[index].substring(0, subIndex)}${subIndex === words[index].length ? ' ' : ''}`}</p>
+        <p className="text-white mt-8">Explore: {`${words[index].substring(0, subIndex)}${subIndex === words[index].length ? ' ' : ''}`}</p> {/* White text for contrast */}
       </header>
     </div>
   );

@@ -2,8 +2,20 @@ import React, { useState, useEffect } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import googleLogo from './logo_google.png';
-import githubLogo from './githu_icon.png';
+import githubLogo from './github_icon.png';
 import backgroundImage from './background.jpg';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCb9dfUprWRiIK0tNaNAgKj5hKJNbuSot0",
+  authDomain: "patahome-d60d5.firebaseapp.com",
+  projectId: "patahome-d60d5",
+  storageBucket: "patahome-d60d5.appspot.com",
+  messagingSenderId: "731867909892",
+  appId: "1:731867909892:web:3b6a154cfd5938d4fe8a51",
+  measurementId: "G-3PN7M2J5CY"
+};
+
+firebase.initializeApp(firebaseConfig);
 
 const words = ["Bungalows", "Apartments", "Mansions", "Villas", "Builder plots"];
 
@@ -31,9 +43,7 @@ function App() {
   useEffect(() => {
     if (index === words.length) return;
 
-    if ( subIndex === words[index].length + 1 && 
-         index !== words.length - 1 && 
-         !reverse ) {
+    if (subIndex === words[index].length + 1 && index !== words.length - 1 && !reverse) {
       setReverse(true);
       return;
     }

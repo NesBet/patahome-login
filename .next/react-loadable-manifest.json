@@ -1,0 +1,8 @@
+{
+  "firebase.js -> firebase/analytics": {
+    "id": "firebase.js -> firebase/analytics",
+    "files": [
+      "static/chunks/node_modules_firebase_analytics_dist_esm_index_esm_js.js"
+    ]
+  }
+}
